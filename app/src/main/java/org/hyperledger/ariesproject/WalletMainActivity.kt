@@ -31,6 +31,8 @@ class WalletMainActivity : AppCompatActivity() {
     private var credentialProgress: ProgressDialog? = null
     private var proofProgress: ProgressDialog? = null
 
+    private var connectionId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,13 +44,38 @@ class WalletMainActivity : AppCompatActivity() {
         setupRecyclerView(binding.menuItemList.itemList)
         waitForAgentInitialze()
 
+
+        binding.btnSendHardcodedMessage.setOnClickListener {
+            connectionId?.let { connId ->
+                lifecycleScope.launch(Dispatchers.Main) {
+                    try {
+                        val app = application as WalletApp
+                        app.agent!!.basicMessages.sendMessage(connId, "Your hardcoded message")
+                        showAlert("Message Sent Successfully!")
+                    } catch (e: Exception) {
+                        showAlert("Error Sending Message: ${e.localizedMessage}")
+                    }
+                }
+            } ?: showAlert("No Connection ID available")
+        }
+
+
+
         binding.invitation.setOnEditorActionListener { _, _, _ ->
             val invitation = binding.invitation.text.toString()
             if (invitation.isNotEmpty()) {
                 val app = application as WalletApp
                 lifecycleScope.launch(Dispatchers.Main) {
-                    val (_, connection) = app.agent!!.oob.receiveInvitationFromUrl(invitation)
-                    showAlert("Connected to ${connection?.theirLabel ?: "unknown agent"}")
+                    try {
+                        val (_, connection) = app.agent!!.oob.receiveInvitationFromUrl(invitation)
+                        connectionId = connection?.id // Update connectionId here
+                        Log.d("ConnectionDebug", "Connection: $connection")
+                        showAlert("Connected to ${connection?.theirLabel ?: "unknown agent"}")
+                    } catch (e: Exception) {
+                        connectionId = null // Clear connectionId as it is not valid
+                        Log.e("ConnectionError", "Error establishing connection: ${e.localizedMessage}", e)
+                        showAlert("Error establishing connection: ${e.localizedMessage}")
+                    }
                 }
             }
             true

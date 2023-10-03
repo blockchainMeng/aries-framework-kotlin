@@ -20,6 +20,10 @@ import org.hyperledger.ariesframework.proofs.repository.ProofRepository
 import org.hyperledger.ariesframework.routing.MediationRecipient
 import org.hyperledger.ariesframework.storage.DidCommMessageRepository
 import org.hyperledger.ariesframework.wallet.Wallet
+import org.hyperledger.ariesframework.basicmessages.BasicMessageCommand
+import org.hyperledger.ariesframework.basicmessages.BasicMessageService
+import org.hyperledger.ariesframework.basicmessages.repository.BasicMessageRepository
+
 
 class Agent(val context: Context, val agentConfig: AgentConfig) {
     val wallet: Wallet = Wallet(this)
@@ -43,6 +47,9 @@ class Agent(val context: Context, val agentConfig: AgentConfig) {
     val proofRepository = ProofRepository(this)
     val proofService = ProofService(this)
     val proofs = ProofCommand(this, dispatcher)
+    val basicMessageRepository = BasicMessageRepository(this)
+    val basicMessageService = BasicMessageService(this)
+    val basicMessages = BasicMessageCommand(this, dispatcher)
 
     private var _isInitialized = false
 

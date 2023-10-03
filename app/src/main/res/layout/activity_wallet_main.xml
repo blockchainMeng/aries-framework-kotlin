@@ -31,6 +31,14 @@
             android:id="@+id/menu_item_list"
             layout="@layout/menu_item_list" />
 
+        <Button
+            android:id="@+id/btnSendHardcodedMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Send Message" />
+
         <EditText
             android:id="@+id/invitation"
             android:layout_width="match_parent"
