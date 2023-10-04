@@ -25,7 +25,7 @@ class BasicMessageService(val agent: Agent) {
         val basicMessage = BasicMessage(message, parentThreadId)
 
         val basicMessageRecord = BasicMessageRecord(
-            sentTime = basicMessage.sentTime.toString(), // Adjusted to use ISO string.
+            sentTime = basicMessage.sentTime.toString(),
             content = basicMessage.content,
             connectionId = connectionRecord.id,
             role = BasicMessageRole.Receiver, // Adjusted role to Receiver.

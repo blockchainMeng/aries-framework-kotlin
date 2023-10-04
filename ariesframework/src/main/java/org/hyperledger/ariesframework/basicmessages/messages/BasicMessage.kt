@@ -13,7 +13,7 @@ class BasicMessage(
         const val type = "https://didcomm.org/basicmessage/1.0/message"
     }
 
-    // You can add other methods here if needed
+    //  Add other methods here if needed
 }
 
 
