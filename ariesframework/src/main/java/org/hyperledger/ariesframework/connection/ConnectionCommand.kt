@@ -7,10 +7,9 @@ import org.hyperledger.ariesframework.agent.MessageSerializer
 import org.hyperledger.ariesframework.connection.handlers.ConnectionRequestHandler
 import org.hyperledger.ariesframework.connection.handlers.ConnectionResponseHandler
 import org.hyperledger.ariesframework.connection.handlers.TrustPingMessageHandler
-import org.hyperledger.ariesframework.connection.messages.ConnectionInvitationMessage
-import org.hyperledger.ariesframework.connection.messages.ConnectionRequestMessage
-import org.hyperledger.ariesframework.connection.messages.ConnectionResponseMessage
-import org.hyperledger.ariesframework.connection.messages.TrustPingMessage
+import org.hyperledger.ariesframework.connection.handlers.TrustPingResponseMessageHandler
+import org.hyperledger.ariesframework.connection.messages.*
+
 import org.hyperledger.ariesframework.connection.repository.ConnectionRecord
 import org.hyperledger.ariesframework.oob.messages.OutOfBandInvitation
 import org.hyperledger.ariesframework.oob.models.ReceiveOutOfBandInvitationConfig
@@ -29,6 +28,7 @@ class ConnectionCommand(val agent: Agent, private val dispatcher: Dispatcher) {
         dispatcher.registerHandler(ConnectionRequestHandler(agent))
         dispatcher.registerHandler(ConnectionResponseHandler(agent))
         dispatcher.registerHandler(TrustPingMessageHandler(agent))
+        dispatcher.registerHandler(TrustPingResponseMessageHandler(agent))
     }
 
     private fun registerMessages() {
@@ -36,6 +36,7 @@ class ConnectionCommand(val agent: Agent, private val dispatcher: Dispatcher) {
         MessageSerializer.registerMessage(ConnectionRequestMessage.type, ConnectionRequestMessage::class)
         MessageSerializer.registerMessage(ConnectionResponseMessage.type, ConnectionResponseMessage::class)
         MessageSerializer.registerMessage(TrustPingMessage.type, TrustPingMessage::class)
+        MessageSerializer.registerMessage(TrustPingResponseMessage.type, TrustPingResponseMessage::class)
     }
 
     /**

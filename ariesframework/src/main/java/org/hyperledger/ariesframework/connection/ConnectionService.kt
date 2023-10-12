@@ -10,10 +10,7 @@ import org.hyperledger.ariesframework.agent.AgentEvents
 import org.hyperledger.ariesframework.agent.MessageSerializer
 import org.hyperledger.ariesframework.agent.decorators.SignatureDecorator
 import org.hyperledger.ariesframework.agent.decorators.ThreadDecorator
-import org.hyperledger.ariesframework.connection.messages.ConnectionInvitationMessage
-import org.hyperledger.ariesframework.connection.messages.ConnectionRequestMessage
-import org.hyperledger.ariesframework.connection.messages.ConnectionResponseMessage
-import org.hyperledger.ariesframework.connection.messages.TrustPingMessage
+import org.hyperledger.ariesframework.connection.messages.*
 import org.hyperledger.ariesframework.connection.models.Connection
 import org.hyperledger.ariesframework.connection.models.ConnectionRole
 import org.hyperledger.ariesframework.connection.models.ConnectionState
@@ -365,6 +362,23 @@ class ConnectionService(val agent: Agent) {
         }
 
         return OutboundMessage(trustPing, connectionRecord)
+    }
+    suspend fun processPingResponse(messageContext: InboundMessageContext){
+        logger.debug("Processing connection response message")
+        val message = MessageSerializer.decodeFromString(messageContext.plaintextMessage) as TrustPingResponseMessage
+
+        val connection = messageContext.assertReadyConnection()
+
+
+        // Logging the connection and message details
+        logger.debug("Connection: $connection")
+        logger.debug("Message: $message")
+
+        
+        
+
+
+
     }
 
     suspend fun updateState(connectionRecord: ConnectionRecord, newState: ConnectionState) {
